@@ -2510,11 +2510,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kenng/Desktop/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer.csproj",
+      "projectUniqueName": "/Users/kenng/Documents/GitHub/SEOAnalyzer/SitecoreSEOAnalyzer.csproj",
       "projectName": "SitecoreSEOAnalyzer",
-      "projectPath": "/Users/kenng/Desktop/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer.csproj",
+      "projectPath": "/Users/kenng/Documents/GitHub/SEOAnalyzer/SitecoreSEOAnalyzer.csproj",
       "packagesPath": "/Users/kenng/.nuget/packages/",
-      "outputPath": "/Users/kenng/Desktop/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer/obj/",
+      "outputPath": "/Users/kenng/Documents/GitHub/SEOAnalyzer/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/kenng/.config/NuGet/NuGet.Config"

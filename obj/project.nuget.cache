@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LlXjXsecaRWEUuWYet0ar8Xjq1WeG6c/0riY/oJezdSqxTOCcMwdWk79ZDvGwSu805vr5gq4856QLsNXc8197Q==",
+  "dgSpecHash": "+HwWXaAheP7crgMjt7HHiYNW36Zd2DDgS4STuAoSNRbX81sYfBCIVXFBOzH0r4spjc0vpeMDFxObEPAmObUl9A==",
   "success": true,
-  "projectFilePath": "/Users/kenng/Desktop/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer/SitecoreSEOAnalyzer.csproj",
+  "projectFilePath": "/Users/kenng/Documents/GitHub/SEOAnalyzer/SitecoreSEOAnalyzer.csproj",
   "expectedPackageFiles": [
     "/Users/kenng/.nuget/packages/fluentvalidation/9.5.3/fluentvalidation.9.5.3.nupkg.sha512",
     "/Users/kenng/.nuget/packages/fluentvalidation.aspnetcore/9.5.3/fluentvalidation.aspnetcore.9.5.3.nupkg.sha512",
