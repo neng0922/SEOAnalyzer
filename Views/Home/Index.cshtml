@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model Home
+
+<style>
+    .table {
+        word-break: break-all;
+    }
+</style>
+
+<form>
+    <div class="text-center">
+        <h4 class="m-5">Identify the occurrences of stopwords and external links in the page</h4>
+        <div class="row mb-5">
+            <div class="col-10 w-100">
+                <input asp-for="Text" class="w-100" />
+                <span asp-validation-for="@Model.Text" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <input type="submit" value="Analyze" class="w-100" />
+            </div>
+        </div>
+        @if ((Model.PageOccurrences.Count > 0) || Model.MetaOccurrences.Count > 0 || Model.ExternalLinks.Count > 0)
+        {
+            <div class="row mt-5">
+                <div class="col-6 border-right">
+                    <h5>Occurrence of stopwords in page</h5>
+                    <table id="pageOccurTable" class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Stopword</th>
+                                <th scope="col">Occurrence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var occur in Model.PageOccurrences.OrderByDescending(x => x.Value))
+                            {
+                                <tr>
+                                    <td>@occur.Key</td>
+                                    <td>@occur.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <h5>Occurrence of stopwords in meta tag</h5>
+                    <table id="metaOccurTable" class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Stopword</th>
+                                <th scope="col">Occurrence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var occur in Model.MetaOccurrences.OrderByDescending(x => x.Value))
+                            {
+                                <tr>
+                                    <td>@occur.Key</td>
+                                    <td>@occur.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="w-100 mt-5 mb-5" />
+                <div>
+                    <h5>Occurrence of links in page</h5>
+                    <table id="linkOccurTable" class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Link</th>
+                                <th scope="col" style="word-break:normal;">Occurrence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var occur in Model.ExternalLinks.OrderByDescending(x => x.Value))
+                            {
+                                <tr>
+                                    <td class="text-left">@occur.Key</td>
+                                    <td>@occur.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</form>
+
+@section scripts{
+    <script>$(document).ready(function () {
+            $('#pageOccurTable').DataTable();
+            $('#metaOccurTable').DataTable();
+            $('#linkOccurTable').DataTable();
+        });</script>
+}
