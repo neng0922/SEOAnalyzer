@@ -35,31 +35,36 @@ namespace SitecoreSEOAnalyzer.Controllers
                         HtmlDocument pageDocument = new HtmlDocument();
                         pageDocument.LoadHtml(pageContents);
 
-
-                        // page occurrence
-                        var getPage = pageDocument.DocumentNode.InnerHtml;
-                        var pageOccurrence = CalculateStopwordOccurrence(getPage);
-                        model.PageOccurrences = pageOccurrence;
-
-                        // meta occurrence
-                        var meta = new StringBuilder();
-                        var getMeta = pageDocument.DocumentNode.SelectNodes("//meta");
-                        foreach (var node in getMeta)
+                        if (model.StopwordCheck)
                         {
-                            meta.Append(node.GetAttributeValue("content", string.Empty));
-                        }
-                        var metaOccurrence = CalculateStopwordOccurrence(meta.ToString());
-                        model.MetaOccurrences = metaOccurrence;
+                            // page occurrence
+                            var getPage = pageDocument.DocumentNode.InnerHtml;
+                            var pageOccurrence = CalculateStopwordOccurrence(getPage);
+                            model.PageOccurrences = pageOccurrence;
 
-                        // external links occurrence
-                        var externalLinks = new StringBuilder();
-                        var getExternalLinks = pageDocument.DocumentNode.SelectNodes("//a[@href]");
-                        foreach (var node in getExternalLinks)
-                        {
-                            externalLinks.Append(node.GetAttributeValue("href", string.Empty)).Append("|");
+                            // meta occurrence
+                            var meta = new StringBuilder();
+                            var getMeta = pageDocument.DocumentNode.SelectNodes("//meta");
+                            foreach (var node in getMeta)
+                            {
+                                meta.Append(node.GetAttributeValue("content", string.Empty));
+                            }
+                            var metaOccurrence = CalculateStopwordOccurrence(meta.ToString());
+                            model.MetaOccurrences = metaOccurrence;
                         }
-                        var linkOccurrence = CalculateLinkOccurrence(externalLinks.ToString());
-                        model.ExternalLinks = linkOccurrence;
+
+                        if (model.LinkCheck)
+                        {
+                            // external links occurrence
+                            var externalLinks = new StringBuilder();
+                            var getExternalLinks = pageDocument.DocumentNode.SelectNodes("//a[@href]");
+                            foreach (var node in getExternalLinks)
+                            {
+                                externalLinks.Append(node.GetAttributeValue("href", string.Empty)).Append("|");
+                            }
+                            var linkOccurrence = CalculateLinkOccurrence(externalLinks.ToString());
+                            model.ExternalLinks = linkOccurrence;
+                        }
                     }
                     catch (Exception e)
                     {

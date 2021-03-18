@@ -681,7 +681,6 @@
 /Users/kenng/Documents/GitHub/SEOAnalyzer/bin/Debug/netcoreapp3.1/tr/Microsoft.CodeAnalysis.CSharp.resources.dll
 /Users/kenng/Documents/GitHub/SEOAnalyzer/bin/Debug/netcoreapp3.1/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll
 /Users/kenng/Documents/GitHub/SEOAnalyzer/bin/Debug/netcoreapp3.1/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll
-/Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.csprojAssemblyReference.cache
 /Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.AssemblyInfoInputs.cache
 /Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.AssemblyInfo.cs
 /Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.csproj.CoreCompileInputs.cache
@@ -709,3 +708,4 @@
 /Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.dll
 /Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.pdb
 /Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.genruntimeconfig.cache
+/Users/kenng/Documents/GitHub/SEOAnalyzer/obj/Debug/netcoreapp3.1/SitecoreSEOAnalyzer.csprojAssemblyReference.cache

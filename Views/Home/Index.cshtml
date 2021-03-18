@@ -8,84 +8,107 @@
     .table {
         word-break: break-all;
     }
+
+    small {
+        font-size: 65%;
+    }
 </style>
 
 <form>
     <div class="text-center">
         <h4 class="m-5">Identify the occurrences of stopwords and external links in the page</h4>
-        <div class="row mb-5">
-            <div class="col-10 w-100">
+        <div class="row mb-5 align-items-end">
+            <div class="col-9 w-100">
                 <input asp-for="Text" class="w-100" />
                 <span asp-validation-for="@Model.Text" class="text-danger"></span>
             </div>
-            <div class="col-2">
-                <input type="submit" value="Analyze" class="w-100" />
+            <div class="col-1">
+                <input type="checkbox" asp-for="StopwordCheck" />
+                <small>Stopword</small>
+            </div>
+            <div class="col-1">
+                <input type="checkbox" asp-for="LinkCheck" />
+                <small>Link</small>
+            </div>
+            <div class="col-1">
+                <input type="submit" value="Analyze" />
             </div>
         </div>
         @if ((Model.PageOccurrences.Count > 0) || Model.MetaOccurrences.Count > 0 || Model.ExternalLinks.Count > 0)
         {
+
+
             <div class="row mt-5">
-                <div class="col-6 border-right">
-                    <h5><u>Occurrence of stopwords in page</u></h5>
-                    <table id="pageOccurTable" class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Stopword</th>
-                                <th scope="col">Occurrence</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var occur in Model.PageOccurrences.OrderByDescending(x => x.Value))
-                            {
+                @if (Model.StopwordCheck)
+                {
+                    <div class="col-6 border-right">
+                        <h5><u>Occurrence of stopwords in page</u></h5>
+                        <table id="pageOccurTable" class="table">
+                            <thead>
                                 <tr>
-                                    <td>@occur.Key</td>
-                                    <td>@occur.Value</td>
+                                    <th scope="col">Stopword</th>
+                                    <th scope="col">Occurrence</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-6">
-                    <h5><u>Occurrence of stopwords in meta tag</u></h5>
-                    <table id="metaOccurTable" class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Stopword</th>
-                                <th scope="col">Occurrence</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var occur in Model.MetaOccurrences.OrderByDescending(x => x.Value))
-                            {
+                            </thead>
+                            <tbody>
+                                @foreach (var occur in Model.PageOccurrences.OrderByDescending(x => x.Value))
+                                {
+                                    <tr>
+                                        <td>@occur.Key</td>
+                                        <td>@occur.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <h5><u>Occurrence of stopwords in meta tag</u></h5>
+                        <table id="metaOccurTable" class="table">
+                            <thead>
                                 <tr>
-                                    <td>@occur.Key</td>
-                                    <td>@occur.Value</td>
+                                    <th scope="col">Stopword</th>
+                                    <th scope="col">Occurrence</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <hr class="w-100 mt-5 mb-5" />
-                <div>
-                    <h5><u>Occurrence of links in page</u></h5>
-                    <table id="linkOccurTable" class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Link</th>
-                                <th scope="col" style="word-break:normal;">Occurrence</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var occur in Model.ExternalLinks.OrderByDescending(x => x.Value))
-                            {
+                            </thead>
+                            <tbody>
+                                @foreach (var occur in Model.MetaOccurrences.OrderByDescending(x => x.Value))
+                                {
+                                    <tr>
+                                        <td>@occur.Key</td>
+                                        <td>@occur.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                @if (Model.StopwordCheck && Model.LinkCheck)
+                {
+                    <hr class="w-100 mt-5 mb-5" />
+                }
+                @if (Model.LinkCheck)
+                {
+                    <div class="col">
+                        <h5><u>Occurrence of links in page</u></h5>
+                        <table id="linkOccurTable" class="table">
+                            <thead>
                                 <tr>
-                                    <td class="text-left">@occur.Key</td>
-                                    <td>@occur.Value</td>
+                                    <th scope="col">Link</th>
+                                    <th scope="col" style="word-break:normal;">Occurrence</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach (var occur in Model.ExternalLinks.OrderByDescending(x => x.Value))
+                                {
+                                    <tr>
+                                        <td class="text-left">@occur.Key</td>
+                                        <td>@occur.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         }
     </div>
