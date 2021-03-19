@@ -335,7 +335,7 @@ namespace SitecoreSEOAnalyzer.Models
                     { "yours", true },
                     { "yourself", true },
                     { "yourselves", true }
-                }; ;
+                };
         }
     }
 }

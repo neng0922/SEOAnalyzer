@@ -4,23 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SitecoreSEOAnalyzer.Models;
 
 namespace SitecoreSEOAnalyzer.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public async Task<IActionResult> Index(Home model, string sortOrder)
         {
             if (!string.IsNullOrEmpty(model.Text))
@@ -35,11 +28,11 @@ namespace SitecoreSEOAnalyzer.Controllers
                         HtmlDocument pageDocument = new HtmlDocument();
                         pageDocument.LoadHtml(pageContents);
 
-                        if (model.StopwordCheck)
+                        if (model.WordCheck)
                         {
                             // page occurrence
                             var getPage = pageDocument.DocumentNode.InnerHtml;
-                            var pageOccurrence = CalculateStopwordOccurrence(getPage);
+                            var pageOccurrence = CalculateOccurrence(getPage);
                             model.PageOccurrences = pageOccurrence;
 
                             // meta occurrence
@@ -49,7 +42,7 @@ namespace SitecoreSEOAnalyzer.Controllers
                             {
                                 meta.Append(node.GetAttributeValue("content", string.Empty));
                             }
-                            var metaOccurrence = CalculateStopwordOccurrence(meta.ToString());
+                            var metaOccurrence = CalculateOccurrence(meta.ToString());
                             model.MetaOccurrences = metaOccurrence;
                         }
 
@@ -62,13 +55,15 @@ namespace SitecoreSEOAnalyzer.Controllers
                             {
                                 externalLinks.Append(node.GetAttributeValue("href", string.Empty)).Append("|");
                             }
-                            var linkOccurrence = CalculateLinkOccurrence(externalLinks.ToString());
+                            var linkOccurrence = CalculateOccurrence(externalLinks.ToString(), "link");
                             model.ExternalLinks = linkOccurrence;
                         }
                     }
                     catch (Exception e)
                     {
-                        ModelState.AddModelError("Text", "Please try again with a different URL");
+                        //ModelState.AddModelError("Text", "Please try again with a different URL");
+                        ModelState.AddModelError("Text", e.Message);
+
                     }
                 }
             }
@@ -76,61 +71,59 @@ namespace SitecoreSEOAnalyzer.Controllers
             return View(model);
         }
 
-        private Dictionary<string, int> CalculateStopwordOccurrence(string text)
+        private Dictionary<string, int> CalculateOccurrence(string text, string option = null)
         {
-            var stopwords = new Stopword().Stopwords;
-
             Dictionary<string, int> occurrence = new Dictionary<string, int>();
-            char[] delimiters = { ' ', '.', ',', ';', ':', '?', '\n', '\r' };
-            string[] words = text.Split(delimiters);
 
-            foreach (string word in words)
+            if (!string.IsNullOrEmpty(option) && option.Equals("link", StringComparison.OrdinalIgnoreCase))
             {
-                string w = word.Trim().ToLower();
-                if (stopwords.ContainsKey(w))
+                char[] delimiters = { '|' };
+                string[] words = text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+                Uri uriResult;
+                foreach (var word in words)
                 {
-                    if (!occurrence.ContainsKey(w))
+                    bool isValidLink = Uri.TryCreate(word, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+                    if (isValidLink)
                     {
-                        occurrence.Add(w, 1);
+                        if (!occurrence.ContainsKey(word))
+                        {
+                            occurrence.Add(word, 1);
+                        }
+                        else
+                        {
+                            occurrence[word] += 1;
+                        }
                     }
-                    else
+                }
+            }
+            else
+            {
+                Regex wordMatcher = new Regex(@"\p{L}+");
+                var words = wordMatcher.Matches(text).Select(c => c.Value);
+
+                var stopwords = new Stopword().Stopwords;
+
+                foreach (string word in words)
+                {
+                    string w = word.ToLower().Trim();
+
+                    if (!stopwords.ContainsKey(w))
                     {
-                        occurrence[w] += 1;
+                        if (!occurrence.ContainsKey(w))
+                        {
+                            occurrence.Add(w, 1);
+                        }
+                        else
+                        {
+                            occurrence[w] += 1;
+                        }
                     }
                 }
             }
 
             return occurrence;
-        }
-
-        private Dictionary<string, int> CalculateLinkOccurrence(string text)
-        {
-            Dictionary<string, int> occurrence = new Dictionary<string, int>();
-            char[] delimiters = { '|' };
-            string[] words = text.Split(delimiters);
-
-            foreach (var word in words)
-            {
-                string w = word.Trim().ToLower();
-                if (w.Contains("http"))
-                {
-                    if (!occurrence.ContainsKey(w))
-                    {
-                        occurrence.Add(w, 1);
-                    }
-                    else
-                    {
-                        occurrence[w] += 1;
-                    }
-                }
-            }
-
-            return occurrence;
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
