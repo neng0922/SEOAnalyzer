@@ -61,9 +61,7 @@ namespace SitecoreSEOAnalyzer.Controllers
                     }
                     catch (Exception e)
                     {
-                        //ModelState.AddModelError("Text", "Please try again with a different URL");
-                        ModelState.AddModelError("Text", e.Message);
-
+                        ModelState.AddModelError("Text", "Please try again with a different URL");
                     }
                 }
             }
